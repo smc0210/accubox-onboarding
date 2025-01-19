@@ -1,3 +1,5 @@
+import { ChecklistSection } from './types'
+
 export const ONBOARDING_STEPS = [
   {
     step: 1,
@@ -25,9 +27,10 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
     title: '장비 및 개발 도구 준비',
     step: 1,
     items: [
-      { id: 'laptop', title: '노트북', completed: false },
-      { id: 'ide', title: 'IDE', completed: false },
-      { id: 'copilot', title: 'Copilot', completed: false }
+      { id: 'laptop', title: '맥북', completed: false },
+      { id: 'ide', title: 'IDE (IntelliJ IDEA)', completed: false },
+      { id: 'erd-viewer', title: 'ERD Viewer', completed: false },
+      { id: 'datagrip', title: 'Datagrip', completed: false }
     ]
   },
   {
@@ -35,13 +38,13 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
     title: '계정 생성 및 권한 부여',
     step: 2,
     items: [
-      { id: 'google', title: 'Google Workspace', completed: false },
-      { id: 'slack', title: 'Slack', completed: false },
-      { id: 'github', title: 'Github', completed: false },
-      { id: 'aws', title: 'AWS', completed: false },
-      { id: 'jira', title: 'Jira', completed: false },
-      { id: 'confluence', title: 'Confluence', completed: false },
-      { id: 'notion', title: 'Notion', completed: false }
+      { id: 'google', title: 'Google Workspace (담당: Jason)', completed: false },
+      { id: 'slack', title: 'Slack (담당: HS)', completed: false },
+      { id: 'github', title: 'Github (담당: HS, Wiz)', completed: false },
+      { id: 'aws', title: 'AWS (담당: Wiz)', completed: false },
+      { id: 'jira', title: 'Jira (담당: Jason, HS)', completed: false },
+      { id: 'confluence', title: 'Confluence (담당: Jason, HS)', completed: false },
+      { id: 'notion', title: 'Notion (담당: Wiz)', completed: false }
     ]
   },
   {

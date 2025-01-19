@@ -44,3 +44,8 @@ export interface QuizResult {
   }
   timestamp: string
 }
+
+export interface UserSession {
+  name: string;
+  startTime: string;
+}
