@@ -204,7 +204,7 @@ export default function Home() {
               </div>
             ))}
           </CardContent>
-          {showQuizButton && (
+          {showQuizButton && currentStep === 3 && (
             <CardFooter>
               <Button
                 className="w-full"
