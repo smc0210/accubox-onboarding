@@ -1,101 +1,164 @@
-import Image from "next/image";
+"use client"
+
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { ChecklistItem } from "@/components/checklist-item"
+import { CHECKLIST_ITEMS } from "@/lib/constants"
+import { useState, useEffect } from "react"
+import { getOnboardingState, updateOnboardingState } from "@/lib/storage"
+import { ChecklistItem as ChecklistItemType } from "@/lib/types"
+import { findItemAndParent, getAllChildrenIds, areAllSiblingsCompleted } from "@/lib/utils/checklist"
+import { useRouter } from "next/navigation"
+
+function countTotalItems(items: ChecklistItemType[]): number {
+  return items.reduce((acc, item) => {
+    const subItemsCount = item.items ? countTotalItems(item.items) : 0
+    return acc + 1 + subItemsCount
+  }, 0)
+}
+
+const flattenItems = (items: ChecklistItemType[]): string[] => {
+  return items.reduce<string[]>((acc, item) => {
+    acc.push(item.id)
+    if (item.items) {
+      acc.push(...flattenItems(item.items))
+    }
+    return acc
+  }, [])
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const router = useRouter()
+  const [completedItems, setCompletedItems] = useState<Set<string>>(new Set())
+  const [showQuizButton, setShowQuizButton] = useState(false)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const state = getOnboardingState()
+    if (state.checklist) {
+      setCompletedItems(new Set(state.checklist.filter(item => item.completed).map(item => item.id)))
+    }
+  }, [])
+
+  const totalItems = CHECKLIST_ITEMS.reduce((acc, section) =>
+    acc + countTotalItems(section.items), 0)
+
+  const progress = (completedItems.size / totalItems) * 100
+
+  useEffect(() => {
+    setShowQuizButton(completedItems.size === totalItems)
+  }, [completedItems.size, totalItems])
+
+  const handleToggle = (id: string, completed: boolean) => {
+    const newCompleted = new Set(completedItems)
+    const result = findItemAndParent(CHECKLIST_ITEMS, id)
+
+    if (!result) return
+
+    const { item, parent } = result
+
+    if (completed) {
+      // 현재 항목 체크
+      newCompleted.add(id)
+
+      // 하위 항목들 모두 체크
+      if (item.items) {
+        getAllChildrenIds(item).forEach(childId => {
+          newCompleted.add(childId)
+        })
+      }
+
+      // 부모 항목들 체크 여부 확인 및 업데이트
+      let currentParent = parent
+      while (currentParent) {
+        const parentResult = findItemAndParent(CHECKLIST_ITEMS, currentParent.id)
+        if (!parentResult) break
+
+        if (areAllSiblingsCompleted(currentParent.items || [], newCompleted)) {
+          newCompleted.add(currentParent.id)
+          currentParent = parentResult.parent
+        } else {
+          break
+        }
+      }
+    } else {
+      // 현재 항목 체크 해제
+      newCompleted.delete(id)
+
+      // 하위 항목들 모두 체크 해제
+      if (item.items) {
+        getAllChildrenIds(item).forEach(childId => {
+          newCompleted.delete(childId)
+        })
+      }
+
+      // 부모 항목들 체크 해제
+      let currentParent = parent
+      while (currentParent) {
+        newCompleted.delete(currentParent.id)
+        const parentResult = findItemAndParent(CHECKLIST_ITEMS, currentParent.id)
+        if (!parentResult) break
+        currentParent = parentResult.parent
+      }
+    }
+
+    setCompletedItems(newCompleted)
+
+    updateOnboardingState({
+      checklist: Array.from(newCompleted).map(id => ({ id, completed: true })),
+      progress: (newCompleted.size / totalItems) * 100
+    })
+  }
+
+  return (
+    <main className="container mx-auto p-4">
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold">온보딩 체크리스트</h1>
+          <p className="text-muted-foreground">
+            신규 입사자를 위한 온보딩 체크리스트입니다.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>진행 상황</span>
+              <span className="text-sm font-normal">
+                {completedItems.size}/{totalItems} 완료
+              </span>
+            </CardTitle>
+            <Progress value={progress} className="h-2" />
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {CHECKLIST_ITEMS.map((section) => (
+              <div key={section.id} className="space-y-4">
+                <h3 className="font-semibold">{section.title}</h3>
+                <div className="space-y-2">
+                  {section.items.map((item) => (
+                    <ChecklistItem
+                      key={item.id}
+                      item={item}
+                      onToggle={handleToggle}
+                      completedItems={completedItems}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+          {showQuizButton && (
+            <CardFooter>
+              <Button
+                className="w-full"
+                onClick={() => router.push('/quiz')}
+              >
+                퀴즈 시작하기
+              </Button>
+            </CardFooter>
+          )}
+        </Card>
+      </div>
+    </main>
+  )
 }
