@@ -10,4 +10,12 @@ export interface ChecklistSection {
   id: string
   title: string
   items: ChecklistItem[]
+  step: number
+}
+
+export interface OnboardingStep {
+  step: number
+  title: string
+  description: string
+  isQuizRequired: boolean
 }

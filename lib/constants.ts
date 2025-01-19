@@ -1,15 +1,31 @@
-export const CHECKLIST_ITEMS = [
+export const ONBOARDING_STEPS = [
   {
-    id: 'equipment',
-    title: '장비 준비',
-    items: [
-      { id: 'laptop', title: '노트북', completed: false }
-    ]
+    step: 1,
+    title: '장비 및 개발 도구 준비',
+    description: '업무에 필요한 장비와 개발 도구를 준비합니다.',
+    isQuizRequired: false
   },
   {
-    id: 'dev-tools',
-    title: '개발 도구 준비',
+    step: 2,
+    title: '계정 생성 및 권한 부여',
+    description: '필요한 서비스 계정을 생성하고 권한을 설정합니다.',
+    isQuizRequired: false
+  },
+  {
+    step: 3,
+    title: '회사 및 프로젝트 이해',
+    description: '회사와 프로젝트에 대해 학습합니다.',
+    isQuizRequired: true
+  }
+] as const
+
+export const CHECKLIST_ITEMS: ChecklistSection[] = [
+  {
+    id: 'equipment-and-tools',
+    title: '장비 및 개발 도구 준비',
+    step: 1,
     items: [
+      { id: 'laptop', title: '노트북', completed: false },
       { id: 'ide', title: 'IDE', completed: false },
       { id: 'copilot', title: 'Copilot', completed: false }
     ]
@@ -17,6 +33,7 @@ export const CHECKLIST_ITEMS = [
   {
     id: 'accounts',
     title: '계정 생성 및 권한 부여',
+    step: 2,
     items: [
       { id: 'google', title: 'Google Workspace', completed: false },
       { id: 'slack', title: 'Slack', completed: false },
@@ -30,6 +47,7 @@ export const CHECKLIST_ITEMS = [
   {
     id: 'company',
     title: '회사 및 프로젝트 이해',
+    step: 3,
     items: [
       { id: 'company-intro', title: '회사 소개', completed: false },
       {
@@ -65,4 +83,4 @@ export const CHECKLIST_ITEMS = [
       }
     ]
   }
-] as const
+]

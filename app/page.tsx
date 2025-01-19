@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { ChecklistItem } from "@/components/checklist-item"
-import { CHECKLIST_ITEMS } from "@/lib/constants"
+import { CHECKLIST_ITEMS, ONBOARDING_STEPS } from "@/lib/constants"
 import { useState, useEffect } from "react"
 import { getOnboardingState, updateOnboardingState } from "@/lib/storage"
 import { ChecklistItem as ChecklistItemType } from "@/lib/types"
@@ -28,10 +28,15 @@ const flattenItems = (items: ChecklistItemType[]): string[] => {
   }, [])
 }
 
+function isStepCompleted(section: ChecklistItemType, completedItems: Set<string>): boolean {
+  const allIds = getAllChildrenIds(section)
+  return allIds.every(id => completedItems.has(id))
+}
+
 export default function Home() {
   const router = useRouter()
   const [completedItems, setCompletedItems] = useState<Set<string>>(new Set())
-  const [showQuizButton, setShowQuizButton] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
 
   useEffect(() => {
     const state = getOnboardingState()
@@ -40,14 +45,36 @@ export default function Home() {
     }
   }, [])
 
+  // 스텝 변경 핸들러
+  const handleStepChange = (step: number) => {
+    setCurrentStep(step)
+  }
+
+  // 현재 스텝의 섹션만 필터링
+  const currentSections = CHECKLIST_ITEMS.filter(
+    section => section.step === currentStep
+  )
+
   const totalItems = CHECKLIST_ITEMS.reduce((acc, section) =>
     acc + countTotalItems(section.items), 0)
 
   const progress = (completedItems.size / totalItems) * 100
 
-  useEffect(() => {
-    setShowQuizButton(completedItems.size === totalItems)
-  }, [completedItems.size, totalItems])
+  // 퀴즈 버튼 표시 조건 수정
+  const showQuizButton = isStepCompleted(
+    CHECKLIST_ITEMS.find(section => section.step === 3)!,
+    completedItems
+  )
+
+  // 각 스텝별 진행률 계산 함수 추가
+  const calculateStepProgress = (step: number) => {
+    const stepSection = CHECKLIST_ITEMS.find(section => section.step === step)
+    if (!stepSection) return 0
+
+    const stepItems = getAllChildrenIds(stepSection)
+    const completedStepItems = stepItems.filter(id => completedItems.has(id))
+    return Math.round((completedStepItems.length / stepItems.length) * 100)
+  }
 
   const handleToggle = (id: string, completed: boolean) => {
     const newCompleted = new Set(completedItems)
@@ -120,20 +147,50 @@ export default function Home() {
           </p>
         </div>
 
+        <div className="flex gap-2">
+          {ONBOARDING_STEPS.map((step) => {
+            const stepProgress = calculateStepProgress(step.step)
+            return (
+              <Card
+                key={step.step}
+                className={`flex-1 cursor-pointer transition-all hover:ring-2 hover:ring-primary/50
+                  ${currentStep === step.step ? 'ring-2 ring-primary' : ''}`}
+                onClick={() => handleStepChange(step.step)}
+              >
+                <CardHeader>
+                  <CardTitle className="text-sm flex justify-between items-center">
+                    <span>Step {step.step}</span>
+                    <span className="text-xs font-normal text-muted-foreground">
+                      {stepProgress}%
+                    </span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="font-medium">{step.title}</p>
+                  <p className="text-sm text-muted-foreground">{step.description}</p>
+                  <Progress
+                    value={stepProgress}
+                    className="h-1 mt-2"
+                  />
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>진행 상황</span>
+              <span>{ONBOARDING_STEPS.find(s => s.step === currentStep)?.title}</span>
               <span className="text-sm font-normal">
-                {completedItems.size}/{totalItems} 완료
+                {calculateStepProgress(currentStep)}% 완료
               </span>
             </CardTitle>
-            <Progress value={progress} className="h-2" />
+            <Progress value={calculateStepProgress(currentStep)} className="h-2" />
           </CardHeader>
           <CardContent className="space-y-6">
-            {CHECKLIST_ITEMS.map((section) => (
+            {currentSections.map((section) => (
               <div key={section.id} className="space-y-4">
-                <h3 className="font-semibold">{section.title}</h3>
                 <div className="space-y-2">
                   {section.items.map((item) => (
                     <ChecklistItem
@@ -153,7 +210,7 @@ export default function Home() {
                 className="w-full"
                 onClick={() => router.push('/quiz')}
               >
-                퀴즈 시작하기
+                도메인 지식 퀴즈 시작하기
               </Button>
             </CardFooter>
           )}
