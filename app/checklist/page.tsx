@@ -216,7 +216,7 @@ export default function ChecklistPage() {
             <CardFooter>
               <Button
                 className="w-full"
-                onClick={() => router.push('/quiz')}
+                onClick={() => router.push('/quiz/select')}
               >
                 도메인 지식 퀴즈 시작하기
               </Button>
@@ -226,4 +226,4 @@ export default function ChecklistPage() {
       </div>
     </main>
   )
-} 
+}

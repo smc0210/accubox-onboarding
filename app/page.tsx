@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { getUserSession, setUserSession } from '@/lib/storage';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Step } from '@/components/ui/step';
 
 export default function Home() {
   const router = useRouter();
@@ -49,6 +50,12 @@ export default function Home() {
             시작하기
           </Button>
         </form>
+        <Step
+          step={3}
+          title="도메인 퀴즈 시작하기"
+          description="도메인 지식을 테스트하고 학습하세요"
+          href="/quiz/select"
+        />
       </Card>
     </main>
   );
