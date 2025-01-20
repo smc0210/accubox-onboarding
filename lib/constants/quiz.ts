@@ -1,12 +1,18 @@
 import { QuizQuestion } from '@/lib/types'
 
-let quizQuestions: QuizQuestion[] = []
+let quizQuestions: Record<string, QuizQuestion[]> = {}
 
-export async function loadQuizQuestions(): Promise<QuizQuestion[]> {
-  if (quizQuestions.length > 0) return quizQuestions
+export async function loadQuizQuestions(category?: string): Promise<QuizQuestion[]> {
+  // 이미 로드된 카테고리의 퀴즈가 있다면 반환
+  if (category && quizQuestions[category]?.length > 0) {
+    return quizQuestions[category]
+  } else if (!category && Object.values(quizQuestions).flat().length > 0) {
+    return Object.values(quizQuestions).flat()
+  }
 
   try {
-    const response = await fetch('/api/quiz', {
+    const url = category ? `/api/quiz?category=${category}` : '/api/quiz'
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -18,8 +24,20 @@ export async function loadQuizQuestions(): Promise<QuizQuestion[]> {
     }
 
     const data = await response.json()
-    quizQuestions = data
-    return quizQuestions
+
+    if (category) {
+      quizQuestions[category] = data
+      return data
+    } else {
+      // 전체 퀴즈를 로드한 경우
+      quizQuestions = data.reduce((acc: Record<string, QuizQuestion[]>, question: QuizQuestion) => {
+        const cat = question.category
+        if (!acc[cat]) acc[cat] = []
+        acc[cat].push(question)
+        return acc
+      }, {})
+      return data
+    }
   } catch (error) {
     console.error('Error loading quiz questions:', error)
     return []

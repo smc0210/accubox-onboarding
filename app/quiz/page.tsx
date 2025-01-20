@@ -6,15 +6,17 @@ import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
-import { QUIZ_QUESTIONS } from '@/lib/constants/quiz'
 import { loadQuizQuestions } from '@/lib/constants/quiz'
 import { getUserSession } from '@/lib/storage'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { QuizQuestion } from '@/lib/types'
 
 export default function QuizPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const category = searchParams.get('category')
+
   const [questions, setQuestions] = useState<QuizQuestion[]>([])
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string>('')
@@ -32,13 +34,16 @@ export default function QuizPage() {
     setUserName(session.name)
 
     // 퀴즈 데이터 로드
-    loadQuizQuestions().then(loadedQuestions => {
+    loadQuizQuestions(category || undefined).then(loadedQuestions => {
+      console.log('Category:', category)
       console.log('Loaded questions:', loadedQuestions)
+      console.log('Number of questions:', loadedQuestions.length)
+      console.log('First question:', loadedQuestions[0])
       setQuestions(loadedQuestions)
     }).catch(error => {
       console.error('Error loading questions:', error)
     })
-  }, [router])
+  }, [router, category])
 
   if (questions.length === 0) {
     return (
