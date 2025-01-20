@@ -91,7 +91,7 @@ export default function QuizPage() {
       answers: selectedAnswers,
       timestamp: new Date().toISOString()
     }));
-    
+
     // 결과 페이지로 이동
     router.push('/quiz/result');
   };

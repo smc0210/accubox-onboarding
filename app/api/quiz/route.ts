@@ -14,11 +14,11 @@ function parseQuizMarkdown(content: string): QuizQuestion[] {
 
     const id = section.match(/Q(\d+)/)![1]
     const question = questionMatch[1]
-    
+
     // 메타데이터 파싱
     const metadata: Record<string, any> = {}
     const options: string[] = []
-    
+
     // 옵션 섹션 찾기
     const optionsMatch = section.match(/- options:\n((?:  - [^\n]+\n)+)/)
     if (optionsMatch) {
@@ -59,17 +59,17 @@ export async function GET() {
     const quizPath = path.join(process.cwd(), 'docs', 'quiz.md')
     const fileContents = fs.readFileSync(quizPath, 'utf8')
     const questions = parseQuizMarkdown(fileContents)
-    
+
     // 디버깅을 위한 상세 로깅
     questions.forEach(q => {
       console.log(`\nQuestion ${q.id}:`)
       console.log('Options:', q.options)
       console.log('Answer:', q.answer)
     })
-    
+
     return NextResponse.json(questions)
   } catch (error) {
     console.error('Error in quiz API:', error)
     return NextResponse.json({ error: 'Failed to load quiz questions' }, { status: 500 })
   }
-} 
+}

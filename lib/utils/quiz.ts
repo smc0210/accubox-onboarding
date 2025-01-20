@@ -10,7 +10,7 @@ export function parseQuizMarkdown(content: string): QuizQuestion[] {
   sections.forEach(section => {
     const lines = section.split('\n')
     const questionMatches = lines.join('\n').match(/### Q\d+\. (.+)[\n\r]/g)
-    
+
     if (!questionMatches) return
 
     questionMatches.forEach(questionMatch => {
@@ -60,4 +60,4 @@ export function loadQuizQuestions(): QuizQuestion[] {
   const quizPath = path.join(process.cwd(), 'docs', 'quiz.md')
   const fileContents = fs.readFileSync(quizPath, 'utf8')
   return parseQuizMarkdown(fileContents)
-} 
+}

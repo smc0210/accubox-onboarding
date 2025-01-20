@@ -58,8 +58,10 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
         id: 'mortgage-los',
         title: '모기지 대출 및 LOS 이해',
         items: [
+          { id: 'domain', title: '📑 용어', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/7045160', target: '_blank', rel: 'noopener noreferrer' },
           { id: 'mortgage-process', title: '📑 모기지 대출 프로세스', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/5668865#', target: '_blank', rel: 'noopener noreferrer' },
-          { id: 'los-workflow', title: '📑 LOS Workflow 내 각 담당자 역할', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/9076750#', target: '_blank', rel: 'noopener noreferrer' }
+          { id: 'los-analysis', title: '📑 LOS 분석', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/7012354/LOS', target: '_blank', rel: 'noopener noreferrer' },
+          { id: 'los-workflow', title: '📑 LOS Workflow 내 각 담당자 역할', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/9076750#', target: '_blank', rel: 'noopener noreferrer' },
         ]
       },
       {
@@ -81,7 +83,7 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
               { id: 'system-diagram', title: '📑 시스템 구성도 (draft)', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/8781836/draft', target: '_blank', rel: 'noopener noreferrer' },
               { id: 'backend-system', title: '📑 백엔드 시스템 개발 전략', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/40501511', target: '_blank', rel: 'noopener noreferrer' },
               { id: 'ERD', title: '📑 ERD', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/46235766/erd', target: '_blank', rel: 'noopener noreferrer' },
-              { id: 'design-notes', title: '📑 ✏️ Design Notes', completed: false, link: '#', target: '_blank', rel: 'noopener noreferrer' }
+              { id: 'design-notes', title: '📑 Design Notes', completed: false, link: '#', target: '_blank', rel: 'noopener noreferrer' }
             ]
           },
           {
@@ -89,9 +91,9 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
             title: '진행상황',
             items: [
               { id: 'ERD', title: '📑 ERD', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/46235766/erd', target: '_blank', rel: 'noopener noreferrer' },
-              { id: 'user-story', title: '📑 ✏️ User Story', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/45973515', target: '_blank', rel: 'noopener noreferrer' },
-              { id: 'workflow', title: '📑 ✏️ User Workflow', completed: false, link: 'https://whimsical.com/work-flow-FPy4gyG7pMoVG6Ah88agDG', target: '_blank', rel: 'noopener noreferrer' },
-              { id: 'sourcecode', title: '📑 ✏️ Los Repo', completed: false, link: 'https://github.com/accubox/los', target: '_blank', rel: 'noopener noreferrer' }
+              { id: 'user-story', title: '📑 User Story', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/45973515', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'workflow', title: '📑 User Workflow', completed: false, link: 'https://whimsical.com/work-flow-FPy4gyG7pMoVG6Ah88agDG', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'sourcecode', title: '📑 Los Repo', completed: false, link: 'https://github.com/accubox/los', target: '_blank', rel: 'noopener noreferrer' }
             ]
           },
         ]
