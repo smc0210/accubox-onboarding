@@ -50,7 +50,7 @@ export default function QuizResultPage() {
     const isCorrect = answers[index] === question.answer;
     categoryStats[category].total += 1;
     if (isCorrect) categoryStats[category].correct += 1;
-    
+
     categoryStats[category].questions.push({
       question: question.question,
       isCorrect,
@@ -131,7 +131,7 @@ export default function QuizResultPage() {
                   <div class="p-3 bg-gray-50 rounded">
                     <p class="font-medium">${q.question}</p>
                     <p class="text-sm text-gray-600">
-                      ${q.isCorrect 
+                      ${q.isCorrect
                         ? `✅ 정답: ${q.answer}`
                         : `❌ 내 답변: ${q.userAnswer} / 정답: ${q.answer}`}
                     </p>

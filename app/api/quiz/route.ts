@@ -56,7 +56,7 @@ function parseQuizMarkdown(content: string): QuizQuestion[] {
 
 export async function GET() {
   try {
-    const quizPath = path.join(process.cwd(), 'docs', 'quiz.md')
+    const quizPath = path.join(process.cwd(), 'docs', 'quiz-template.md')
     const fileContents = fs.readFileSync(quizPath, 'utf8')
     const questions = parseQuizMarkdown(fileContents)
 

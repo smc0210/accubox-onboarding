@@ -1,5 +1,5 @@
 ```markdown
-# 용어 퀴즈
+# domain 퀴즈
 
 ## 1008 Uniform Underwriting and Transmittal Summary
 ### Q1. 1008 양식의 주요 목적은 무엇인가요?

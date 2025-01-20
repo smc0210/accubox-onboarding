@@ -1,6 +1,6 @@
 # Spring Boot 퀴즈
 
-## Spring Boot 기초
+## Spring Boot basics
 
 ### Q1. Spring Boot가 등장하게 된 주요 배경은 무엇인가요?
 

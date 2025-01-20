@@ -1,6 +1,6 @@
 # 대출 프로세스 퀴즈
 
-## 대출 기본 개념
+## loan-origination
 
 ### Q1. 모기지 대출에서 PMI(Private Mortgage Insurance)가 필요한 경우는 언제인가요?
 
