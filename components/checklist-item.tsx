@@ -34,7 +34,12 @@ export function ChecklistItem({
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {link ? (
-            <Link href={link} className="text-blue-500 hover:underline">
+            <Link
+              href={link}
+              className="text-blue-500 hover:underline"
+              target={item.target || '_blank'}
+              rel={item.rel || 'noopener noreferrer'}
+            >
               {title}
             </Link>
           ) : (

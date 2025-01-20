@@ -3,6 +3,8 @@ export interface ChecklistItem {
   title: string
   completed: boolean
   link?: string
+  target?: '_blank' | '_self'
+  rel?: string
   items?: ChecklistItem[]
 }
 

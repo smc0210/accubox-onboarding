@@ -44,7 +44,8 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
       { id: 'aws', title: 'AWS (담당: Wiz)', completed: false },
       { id: 'jira', title: 'Jira (담당: Jason, HS)', completed: false },
       { id: 'confluence', title: 'Confluence (담당: Jason, HS)', completed: false },
-      { id: 'notion', title: 'Notion (담당: Wiz)', completed: false }
+      { id: 'notion', title: 'Notion (담당: Wiz)', completed: false },
+      { id: 'whimsical', title: 'whimsical (담당: Wiz)', completed: false }
     ]
   },
   {
@@ -57,8 +58,8 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
         id: 'mortgage-los',
         title: '모기지 대출 및 LOS 이해',
         items: [
-          { id: 'mortgage-process', title: '📑 모기지 대출 프로세스', completed: false, link: '#' },
-          { id: 'los-workflow', title: '📑 LOS Workflow 내 각 담당자 역할', completed: false, link: '#' }
+          { id: 'mortgage-process', title: '📑 모기지 대출 프로세스', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/5668865#', target: '_blank', rel: 'noopener noreferrer' },
+          { id: 'los-workflow', title: '📑 LOS Workflow 내 각 담당자 역할', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/9076750#', target: '_blank', rel: 'noopener noreferrer' }
         ]
       },
       {
@@ -69,19 +70,30 @@ export const CHECKLIST_ITEMS: ChecklistSection[] = [
             id: 'future-plans',
             title: '향후 계획 및 현재 상태',
             items: [
-              { id: 'competition', title: '📑 경쟁력 확보 계획', completed: false, link: '#' }
+              { id: 'competition', title: '📑 경쟁력 확보 계획', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/35520636#', target: '_blank', rel: 'noopener noreferrer' }
             ]
           },
           {
             id: 'architecture',
             title: '주요 아키텍처 및 데이터 흐름',
             items: [
-              { id: 'tech-stack', title: '📑 테크 스택', completed: false, link: '#' },
-              { id: 'system-diagram', title: '📑 시스템 구성도 (draft)', completed: false, link: '#' },
-              { id: 'service-list', title: '📑 Service & Server 목록', completed: false, link: '#' },
-              { id: 'design-notes', title: '📑 ✏️ Design Notes', completed: false, link: '#' }
+              { id: 'tech-stack', title: '📑 프레임워크, 패키지, 라이브러리', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/40435758', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'system-diagram', title: '📑 시스템 구성도 (draft)', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/8781836/draft', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'backend-system', title: '📑 백엔드 시스템 개발 전략', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/40501511', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'ERD', title: '📑 ERD', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/46235766/erd', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'design-notes', title: '📑 ✏️ Design Notes', completed: false, link: '#', target: '_blank', rel: 'noopener noreferrer' }
             ]
-          }
+          },
+          {
+            id: 'progress',
+            title: '진행상황',
+            items: [
+              { id: 'ERD', title: '📑 ERD', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/46235766/erd', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'user-story', title: '📑 ✏️ User Story', completed: false, link: 'https://accubox.atlassian.net/wiki/spaces/Dev/pages/45973515', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'workflow', title: '📑 ✏️ User Workflow', completed: false, link: 'https://whimsical.com/work-flow-FPy4gyG7pMoVG6Ah88agDG', target: '_blank', rel: 'noopener noreferrer' },
+              { id: 'sourcecode', title: '📑 ✏️ Los Repo', completed: false, link: 'https://github.com/accubox/los', target: '_blank', rel: 'noopener noreferrer' }
+            ]
+          },
         ]
       }
     ]
