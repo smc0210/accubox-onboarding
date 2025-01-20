@@ -282,6 +282,9 @@ export default function QuizResultPage() {
           <Button onClick={() => window.location.href = '/'}>
             처음으로 돌아가기
           </Button>
+          <Button onClick={() => window.location.href = '/quiz/select'}>
+            퀴즈 카테고리로 돌아가기
+          </Button>
           <Button onClick={handleDownload} variant="outline" className="flex items-center gap-2">
             <Download className="h-4 w-4" />
             결과 다운로드
