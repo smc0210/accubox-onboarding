@@ -292,4 +292,4 @@
 - answer: 누락된 데이터 확인
 - explanation: LOS 시스템에서는 누락된 데이터 확인, 서명 확인, 기본적인 데이터 검증 등은 자동화가 가능하지만, 비정형 문서 해석이나 감정적 판단은 자동화하기 어렵습니다.
 - documentUrl: https://accubox.atlassian.net/l/cp/WNemjV0m
-- documentSection: LOS 자동화 
+- documentSection: LOS 자동화

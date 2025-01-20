@@ -42,4 +42,4 @@
 - answer: spring-boot-starter-*
 - explanation: 공식 Spring Boot Starter는 'spring-boot-starter-*' 패턴을 따르며, 써드파티 스타터는 'thirdparty-spring-boot-starter' 패턴을 따릅니다.
 - documentUrl: https://accubox.atlassian.net/l/cp/WNemjV0m
-- documentSection: Spring Boot Starter 
+- documentSection: Spring Boot Starter
