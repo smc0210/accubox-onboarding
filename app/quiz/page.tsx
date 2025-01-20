@@ -112,11 +112,11 @@ export default function QuizPage() {
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
-            onClick={() => router.push('/checklist')}
+            onClick={() => router.push('/quiz/select')}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            체크리스트로 돌아가기
+            카테고리 선택으로 돌아가기
           </Button>
           <p className="text-sm text-muted-foreground">
             {currentQuestionIndex + 1} / {questions.length}
